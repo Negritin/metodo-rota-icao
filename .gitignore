@@ -1,0 +1,9 @@
+node_modules
+dist
+.vercel
+*.log
+desktop.png
+mobile.png
+redesign-*.png
+method-*.png
+*.local
