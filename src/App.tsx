@@ -407,11 +407,20 @@ function App() {
         <div className="container transformation-layout reveal">
           <div className="radar-panel" aria-hidden="true">
             <div className="radar-screen">
-              <Route />
-              <span>FROM</span>
-              <strong>Inglês Solto</strong>
-              <span>TO</span>
-              <strong>Rota ICAO</strong>
+              <div className="radar-scan"></div>
+              <div className="radar-blip"></div>
+              <div className="radar-blip"></div>
+              <div className="radar-blip"></div>
+              <div className="radar-blip"></div>
+              <div className="radar-content">
+                <div className="radar-icon-container">
+                  <Route />
+                </div>
+                <span>FROM</span>
+                <strong>Inglês Solto</strong>
+                <span>TO</span>
+                <strong>Rota ICAO</strong>
+              </div>
             </div>
           </div>
           <div>
