@@ -164,6 +164,41 @@ function App() {
     });
   }, []);
 
+  // Scroll progress bar
+  useEffect(() => {
+    const bar = document.createElement("div");
+    bar.className = "scroll-progress";
+    document.body.prepend(bar);
+    const onScroll = () => {
+      const max = document.body.scrollHeight - window.innerHeight;
+      bar.style.width = max > 0 ? `${(window.scrollY / max) * 100}%` : "0%";
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (bar.parentNode) bar.parentNode.removeChild(bar);
+    };
+  }, []);
+
+  // Reveal on scroll
+  useEffect(() => {
+    const els = document.querySelectorAll(".reveal");
+    if (!els.length) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("visible");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.1 },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
   return (
     <main>
       <a className="skip-link" href="#conteudo">
@@ -262,6 +297,27 @@ function App() {
         </div>
       </section>
 
+      <div className="stats-bar" aria-hidden="true">
+        <div className="container">
+          <div className="stat-item">
+            <span className="stat-number">6</span>
+            <span className="stat-label">Módulos</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">30</span>
+            <span className="stat-label">Dias de Plano</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">7</span>
+            <span className="stat-label">Dias de Garantia</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">R.O.T.A.</span>
+            <span className="stat-label">Framework Exclusivo</span>
+          </div>
+        </div>
+      </div>
+
       <section id="conteudo" className="section tension-section">
         <div className="container section-lead">
           <span className="eyebrow">O Ponto Cego</span>
@@ -277,7 +333,7 @@ function App() {
           {painSignals.map((item) => {
             const Icon = item.icon;
             return (
-              <article className="signal-card" key={item.title}>
+              <article className="signal-card reveal" key={item.title}>
                 <Icon aria-hidden="true" />
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
@@ -288,7 +344,7 @@ function App() {
       </section>
 
       <section className="section belief-section">
-        <div className="container belief-grid">
+        <div className="container belief-grid reveal">
           <div>
             <span className="eyebrow">A Rota Certa</span>
             <h2>O problema pode não ser incapacidade. Pode ser estudar pelo caminho errado.</h2>
@@ -321,7 +377,7 @@ function App() {
 
         <div className="container framework-strip" aria-label="Framework R.O.T.A. ICAO">
           {frameworkSteps.map((step) => (
-            <article className="framework-card" key={step.letter}>
+            <article className="framework-card reveal" key={step.letter}>
               <span className="framework-letter">{step.letter}</span>
               <div>
                 <h3>{step.title}</h3>
@@ -333,7 +389,7 @@ function App() {
 
         <div className="container route-board">
           {routeSteps.map((step) => (
-            <article className="route-step" key={step.title}>
+            <article className="route-step reveal" key={step.title}>
               <span>{step.label}</span>
               <h3>{step.title}</h3>
               <p>{step.text}</p>
@@ -348,7 +404,7 @@ function App() {
       </section>
 
       <section className="section transformation-section">
-        <div className="container transformation-layout">
+        <div className="container transformation-layout reveal">
           <div className="radar-panel" aria-hidden="true">
             <div className="radar-screen">
               <Route />
@@ -374,7 +430,7 @@ function App() {
       </section>
 
       <section className="section authority-section">
-        <div className="container authority-layout">
+        <div className="container authority-layout reveal">
           <div>
             <span className="eyebrow">Quem Conhece a Cabine</span>
             <h2>Inglês de aviação ensinado por quem entende a diferença entre sala de aula e operação.</h2>
@@ -423,7 +479,7 @@ function App() {
             </div>
           </div>
 
-          <aside className="price-panel" aria-label="Resumo da oferta">
+          <aside className="price-panel reveal" aria-label="Resumo da oferta">
             <span className="price-label">Acesso Imediato</span>
             <div className="price">{price}</div>
             <p>
@@ -458,7 +514,7 @@ function App() {
 
         <div className="container cards-grid">
           {guidance.map((item) => (
-            <article className="signal-card" key={item.title}>
+            <article className="signal-card reveal" key={item.title}>
               <BadgeCheck aria-hidden="true" />
               <h3>{item.title}</h3>
               <p>{item.text}</p>
@@ -468,7 +524,7 @@ function App() {
       </section>
 
       <section className="section guarantee-section">
-        <div className="container guarantee-box">
+        <div className="container guarantee-box reveal">
           <ClipboardCheck aria-hidden="true" />
           <div>
             <span className="eyebrow">Garantia de 7 Dias</span>
